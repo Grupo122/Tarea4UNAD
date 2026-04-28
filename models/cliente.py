@@ -1,4 +1,4 @@
-"""
+l"""
 cliente.py
 
 Módulo que define la clase Cliente con validaciones robustas,
@@ -95,9 +95,17 @@ class Cliente:
             >>> cliente._validar_email("correo_mal")
             ClienteError: Formato de email inválido
         """
-        patron = r"^[\w\.-]+@[\w\.-]+\.\w+$"
+        if not isinstance(email, str):
+            raise ClienteError("El email debe ser un string")
+
+        email = email.strip()
+
+        patron = r"^[\w\.-]+@[a-zA-Z0-9-]+\.[a-zA-Z]{2,}$"
+
         if not re.match(patron, email):
-            raise ClienteError("Formato de email inválido")
+            raise ClienteError(
+                "Formato de email inválido. Ejemplo válido: usuario@dominio.com"
+            )
 
     def _validar_identificacion(self, identificacion: str):
         """
@@ -154,7 +162,7 @@ class Cliente:
         """
         try:
             self._validar_email(email)
-            self._email = email.strip()
+            self._email = email.strip().lower()
         except ClienteError as e:
             raise ClienteError(f"Error en email: {e}") from e
 
