@@ -5,10 +5,10 @@ from abc import ABC, abstractmethod
 from exceptions.servicio_error import ServicioError, ParametroInvalidoError
 
 class Servicio(ABC):
-    """Clase abstracta base para todos los servicios del sistema."""
+    """Clase abstracta base para todos los servicios del sistema"""
 
     def __init__(self, nombre, precio_por_hora):
-        """Constructor de Servicio. Valida el nombre y el precio."""
+        """Constructor de Servicio. Valida el nombre y el precio"""
         try:
             # verifica que el nombre no esté vacío
             if not nombre or not nombre.strip():
@@ -27,25 +27,25 @@ class Servicio(ABC):
 
     @abstractmethod
     def calcular_costo(self, duracion):
-        """Calcula el costo del servicio según la duración. Cada hijo lo implementa a su manera."""
+        """Calcula el costo del servicio según la duración, cada hijo lo implementa a su manera"""
         pass
 
     @abstractmethod
     def describir(self):
-        """Describe el servicio. Cada hijo lo implementa a su manera."""
+        """Describe el servicio, cada hijo lo implementa a su manera"""
         pass
 
     @abstractmethod
     def validar_parametros(self):
-        """Valida los parámetros específicos de cada servicio. Cada hijo lo implementa a su manera."""
+        """Valida los parámetros específicos de cada servicio. Cada hijo lo implementa a su manera"""
         pass
 
     def __str__(self):
-        """Muestra el nombre y precio del servicio de forma legible."""
+        """Muestra el nombre y precio del servicio"""
         return f"Servicio: {self.nombre} | Precio por hora: ${self.precio_por_hora}"
 
     def validar_duracion(self, duracion):
-        """Valida que la duración sea mayor a cero."""
+        """Valida que la duración sea mayor a cero"""
         try:
             # verifica que la duración sea mayor a cero
             if duracion <= 0:
