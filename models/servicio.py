@@ -9,6 +9,8 @@ class Servicio(ABC):
 
     def __init__(self, nombre, precio_por_hora):
         """Constructor de Servicio. Valida el nombre y el precio"""
+        self.nombre = nombre
+        self.precio_por_hora = precio_por_hora
         try:
             # verifica que el nombre no esté vacío
             if not nombre or not nombre.strip():
@@ -17,8 +19,6 @@ class Servicio(ABC):
             if precio_por_hora <= 0:
                 raise ParametroInvalidoError("El precio por hora debe ser mayor a cero", servicio=nombre)
             
-            self.nombre = nombre
-            self.precio_por_hora = precio_por_hora
 
         except ParametroInvalidoError as e:
             print(f"Error al crear servicio: {e}")

@@ -237,7 +237,7 @@ def operacion_8(cliente, servicios):
 # Demuestra: polimorfismo + metodos sobrecargados (impuesto, descuento, informe)
 # ══════════════════════════════════════════════════════════════════════════════
 def operacion_9(servicios):
-    separador(9, "Calculo de costos con variantes sobrecargadas")
+    separador(9, "Calculo de costos de los servicios")
     if not servicios:
         print("[AVISO] No hay servicios disponibles.")
         return
@@ -246,26 +246,22 @@ def operacion_9(servicios):
         equipo   = servicios[1]
         asesoria = servicios[2]
 
-        # ReservaSala: costo base y con IVA
-        costo_base_sala = sala.calcular_costo(2, personas=5)
-        costo_iva_sala  = sala.calcular_costo_con_impuesto(2)
-        print(f"[OK] [{sala.nombre}] Costo base (2h, 5 personas): ${costo_base_sala}")
-        print(f"[OK] [{sala.nombre}] Costo con IVA 19%:           ${costo_iva_sala}")
+        # Costo de reserva de sala por 2 horas
+        costo_sala = sala.calcular_costo(2)
+        print(f"[OK] [{sala.nombre}] Costo por 2 horas: ${costo_sala}")
 
-        # AlquilerEquipo: costo con 10% de descuento
-        costo_desc = equipo.calcular_costo_con_descuento(3, descuento_pct=10)
-        print(f"[OK] [{equipo.nombre}] Costo con 10% descuento (3h): ${costo_desc}")
+        # Costo de alquiler de equipo por 3 horas y 5 equipos
+        costo_equipo = equipo.calcular_costo(3, 5)
+        print(f"[OK] [{equipo.nombre}] Costo por 3 horas y 5 equipos: ${costo_equipo}")
 
-        # Asesoria: costo base y con informe escrito (+20%)
-        costo_base_ases    = asesoria.calcular_costo(1)
-        costo_con_informe  = asesoria.calcular_costo(1, incluir_informe=True)
-        print(f"[OK] [{asesoria.nombre}] Costo base (1h):           ${costo_base_ases}")
-        print(f"[OK] [{asesoria.nombre}] Con informe escrito (+20%): ${costo_con_informe}")
+        # Costo de asesoria por 1 hora
+        costo_asesoria = asesoria.calcular_costo(1)
+        print(f"[OK] [{asesoria.nombre}] Costo por 1 hora: ${costo_asesoria}")
 
-        log_info("Operacion 9: calculo de variantes de costo completado")
+        log_info("Operacion 9: calculo de costos completado")
 
     except (ServicioError, ParametroInvalidoError, CostoInvalidoError) as e:
-        log_error(f"Error en calculo de costos (operacion 9): {e}")
+        log_error(f"Error en calculo de costos: {e}")
         print(f"[ERROR] {e}")
     finally:
         print("-> Operacion 9 finalizada.")
@@ -281,30 +277,22 @@ def operacion_10(cliente):
         print("[AVISO] No hay cliente disponible.")
         return
     try:
-        # Sala marcada como NO disponible
-        sala_ocupada = ReservaSala("Sala Ocupada", 60000, 8, disponible=False)
-        log_info(f"Sala creada (no disponible): {sala_ocupada.nombre}")
+        # Intentamos crear una sala con capacidad inválida
+        sala_mala = ReservaSala("Sala Ocupada", 60000, -1)
+        log_info(f"Sala creada: {sala_mala.nombre}")
 
-        # Intentar calcular el costo debe lanzar ServicioNoDisponibleError
-        costo = sala_ocupada.calcular_costo(2)
-        log_info(f"Costo calculado (no deberia llegar aqui): ${costo}")
-
-    except ServicioNoDisponibleError as e:
-        log_error(f"Servicio no disponible en operacion 10: {e}")
+    except ParametroInvalidoError as e:
+        log_error(f"Error en operacion 10: {e}")
         print(f"[ERROR] Capturado: {e}")
         # Encadenamiento: el error del servicio causa un error de reserva
         try:
             raise ReservaInvalidaError(
-                "No se puede crear la reserva porque el servicio no esta disponible"
+                "No se puede crear la reserva porque el servicio no es válido"
             ) from e
         except ReservaInvalidaError as re:
             log_exception(f"Excepcion encadenada en operacion 10: {re}")
             print(f"[ERROR] Excepcion encadenada: {re}")
             print(f"        Causa original: {re.__cause__}")
-
-    except ServicioError as e:
-        log_error(f"ServicioError en operacion 10: {e}")
-        print(f"[ERROR] {e}")
 
     finally:
         print("-> Sistema estable. Todas las excepciones fueron manejadas.")
