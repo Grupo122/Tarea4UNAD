@@ -12,6 +12,9 @@ class ReservaSala(Servicio):
         """Constructor de ReservaSala. Recibe el nombre, precio y capacidad máxima."""
         # llama al constructor de Servicio para guardar nombre y precio
         super().__init__(nombre, precio_por_hora)
+        # valida la capacidad
+        if capacidad <= 0:
+            raise ParametroInvalidoError("La capacidad debe ser mayor a cero", servicio=nombre)
         # guarda la capacidad máxima de personas
         self.capacidad = capacidad
 
@@ -49,6 +52,9 @@ class AlquilerEquipo(Servicio):
         """Constructor de AlquilerEquipo. Recibe el nombre, precio y cantidad de equipos."""
         # llama al constructor de Servicio para guardar nombre y precio
         super().__init__(nombre, precio_por_hora)
+        # valida la cantidad
+        if cantidad_equipos <= 0:
+            raise ParametroInvalidoError("La cantidad debe ser mayor a cero", servicio=nombre)
         # guarda la cantidad de equipos a alquilar
         self.cantidad_equipos = cantidad_equipos
 
@@ -86,6 +92,9 @@ class Asesoria(Servicio):
         """Constructor de Asesoria. Recibe el nombre, precio y tipo de asesoría."""
         # llama al constructor de Servicio para guardar nombre y precio
         super().__init__(nombre, precio_por_hora)
+        # valida el tipo
+        if not tipo_asesoria or not tipo_asesoria.strip():
+            raise ParametroInvalidoError("El tipo de asesoría no puede estar vacío", servicio=nombre)
         # guarda el tipo de asesoría
         self.tipo_asesoria = tipo_asesoria
 
