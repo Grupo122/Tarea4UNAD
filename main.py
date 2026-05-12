@@ -89,6 +89,10 @@ def crear_servicio():
         else:
             print("[ERROR] Tipo de servicio inválido.")
             return None
+        # verifica que el servicio sea válido antes de retornarlo
+        if not servicio.valido:
+            print("[ERROR] El servicio no pudo ser creado correctamente.")
+            return None
         
         log_info(f"Servicio creado: {servicio.describir()}")
         print(f"[OK] Servicio creado: {servicio.describir()}")

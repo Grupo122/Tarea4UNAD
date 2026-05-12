@@ -11,6 +11,7 @@ class Servicio(ABC):
         """Constructor de Servicio. Valida el nombre y el precio"""
         self.nombre = nombre
         self.precio_por_hora = precio_por_hora
+        self.valido = True
         try:
             # verifica que el nombre no esté vacío
             if not nombre or not nombre.strip():
@@ -21,6 +22,7 @@ class Servicio(ABC):
             
 
         except ParametroInvalidoError as e:
+            self.valido = False  # ← agregar aquí
             print(f"Error al crear servicio: {e}")
         finally:
             print("Proceso de creación de servicio terminado")
